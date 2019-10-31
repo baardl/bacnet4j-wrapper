@@ -36,7 +36,11 @@ public enum Type {
     BINARY_VALUE("binaryValue", ObjectType.binaryValue),
     MULTISTATE_INPUT("multiStateInput", ObjectType.multiStateInput),
     MULTISTATE_OUTPUT("multiStateOutput", ObjectType.multiStateOutput),
-    MULTISTATE_VALUE("multiStateValue", ObjectType.multiStateValue);
+    MULTISTATE_VALUE("multiStateValue", ObjectType.multiStateValue),
+    ACCUMULATOR("accumulator", ObjectType.accumulator),
+    TREND_LOG("trend-log", ObjectType.trendLogMultiple),
+    CALENDAR("calendar", ObjectType.calendar),
+    SCHEDULE("schedule", ObjectType.schedule);
 
     private final String name;
     private final ObjectType bacNetType;
