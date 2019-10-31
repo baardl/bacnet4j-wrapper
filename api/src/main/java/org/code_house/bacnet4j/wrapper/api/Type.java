@@ -38,7 +38,7 @@ public enum Type {
     MULTISTATE_OUTPUT("multiStateOutput", ObjectType.multiStateOutput),
     MULTISTATE_VALUE("multiStateValue", ObjectType.multiStateValue),
     ACCUMULATOR("accumulator", ObjectType.accumulator),
-    TREND_LOG("trend-log", ObjectType.trendLogMultiple),
+    TREND_LOG("trend-log", ObjectType.trendLog),
     CALENDAR("calendar", ObjectType.calendar),
     SCHEDULE("schedule", ObjectType.schedule);
 
