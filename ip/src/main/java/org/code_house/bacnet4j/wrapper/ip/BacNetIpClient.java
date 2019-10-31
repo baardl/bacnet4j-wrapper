@@ -179,7 +179,7 @@ public class BacNetIpClient implements BacNetClient {
 
             return (T) getJavaValue(presentValue.getValue(), converter);
         } catch (BACnetException e) {
-            throw new BacNetClientException("Could not get property value", e);
+            throw new BacNetUnknownPropertyException("Could not get property value. ", property, e);
         }
     }
 
