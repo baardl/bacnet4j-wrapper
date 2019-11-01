@@ -159,9 +159,16 @@ public class BacNetIpClient implements BacNetClient {
                     continue;
                 }
                 try {
-                    properties.add(createProperty(device, id));
+                    Property property = null;
+                    if (property != null) {
+                        property = createProperty(device, id);
+                        properties.add(property);
+                    }
+
                 } catch (UnsupportedTypeException e) {
                     logger.warn("Discovered unsupported property, ignoring", e);
+                } catch (Exception e) {
+                    logger.info("Could not find property. device: {}, id {}", device,id,e);
                 }
             }
             return properties;
@@ -281,7 +288,11 @@ public class BacNetIpClient implements BacNetClient {
 
     private String getReadValue(ReadAccessResult readAccessResult) {
         // first index contains 0 value.. I know it is weird, but that's how bacnet4j works
-        return readAccessResult.getListOfResults().get(0).getReadResult().toString();
+        String value = null;
+        if (readAccessResult.getListOfResults() != null && readAccessResult.getListOfResults().size() > 0) {
+            value = readAccessResult.getListOfResults().get(0).getReadResult().toString();
+        }
+        return value;
     }
 
 }
