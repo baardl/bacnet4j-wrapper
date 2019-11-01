@@ -24,12 +24,15 @@ import com.serotonin.bacnet4j.type.enumerated.ObjectType;
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.type.primitive.OctetString;
 
+import java.io.Serializable;
+
 /**
  * Representation of bacnet device.
  *
  * @author Łukasz Dywicki &lt;luke@code-house.org&gt;
  */
-public class Device {
+public class Device implements Serializable {
+    static final long serialVersionUID=42L;
 
     private final int instanceNumber;
     private final byte[] address;

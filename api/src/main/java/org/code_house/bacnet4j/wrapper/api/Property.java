@@ -21,7 +21,10 @@ package org.code_house.bacnet4j.wrapper.api;
 
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 
-public class Property {
+import java.io.Serializable;
+
+public class Property implements Serializable {
+    static final long serialVersionUID=42L;
 
     private final Device device;
     private final int id;

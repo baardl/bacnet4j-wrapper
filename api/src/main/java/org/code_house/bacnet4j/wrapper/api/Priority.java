@@ -24,7 +24,7 @@ package org.code_house.bacnet4j.wrapper.api;
  *
  * @author Łukasz Dywicki &lt;luke@code-house.org&gt;
  */
-public interface Priority {
+public interface Priority  {
 
     String getLabel();
     int getPriority();

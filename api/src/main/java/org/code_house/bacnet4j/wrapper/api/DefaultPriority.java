@@ -19,12 +19,15 @@
  */
 package org.code_house.bacnet4j.wrapper.api;
 
+import java.io.Serializable;
+
 /**
  * Immutable priority implementation.
  *
  * @author Łukasz Dywicki &lt;luke@code-house.org&gt;
  */
-public class DefaultPriority implements Priority {
+public class DefaultPriority implements Priority, Serializable {
+    static final long serialVersionUID=42L;
 
     private final int priority;
     private final String label;
