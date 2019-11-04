@@ -1,5 +1,7 @@
 package no.entra.bacnet;
 
+import com.serotonin.bacnet4j.exception.BACnetException;
+import com.serotonin.bacnet4j.service.acknowledgement.ReadPropertyAck;
 import com.serotonin.bacnet4j.type.Encodable;
 import com.serotonin.bacnet4j.util.sero.ByteQueue;
 import org.code_house.bacnet4j.wrapper.api.BacNetToJavaConverter;
@@ -72,6 +74,9 @@ public class SerializationHelper {
                 for (Property property : deviceProperties) {
                     log.info("Device: {}, Property {}. Looking for value.", device.getName(), property);
                     BacNetToJavaConverter<String> converter = new BacNetAgent.StringBacNetToJavaConverter();
+                    String devicePropertyName = "device-" + device.getInstanceNumber() + "-property-" + property.getName();
+                    ReadPropertyAck readPropertyAck = deserializeWithByteQueue(devicePropertyName, ReadPropertyAck.class);
+                    log.info("Found {}", readPropertyAck);
                     /*
                     try {
                         log.info("Device name: {}; Property name: {}; value {} ", device.getName(), property.getName(), client.getPropertyValue(property, converter));
@@ -86,7 +91,7 @@ public class SerializationHelper {
         }
     }
 
-    private static Object deserialize(String filename) {
+    public static Object deserialize(String filename) {
         Object object = null;
         try {
             // Reading the object from a file
@@ -106,5 +111,37 @@ public class SerializationHelper {
             System.out.println("ClassNotFoundException is caught");
         }
         return object;
+    }
+
+    public static ReadPropertyAck deserializeWithByteQueue(String filename, Class<ReadPropertyAck> clazz) {
+        ReadPropertyAck presentValue = null;
+        try {
+            // Reading the object from a file
+            log.trace("Opening file {}", filename);
+            FileInputStream file = new FileInputStream(filename);
+            ObjectInputStream in = new ObjectInputStream(file);
+
+            // Method for deserialization of object
+            byte[] byteArr = {};
+            in.read(byteArr);
+            ByteQueue byteQueue = new ByteQueue(byteArr);
+            //long length = new File(filename).length();
+            //byteQueue.read(in, 300);
+            presentValue =  ReadPropertyAck.read(byteQueue, clazz);
+
+            in.close();
+            file.close();
+
+            log.info("Object has been deserialized {}", presentValue);
+        } catch (FileNotFoundException fnfe) {
+            log.trace("File not found: {}. That might be ok.", filename);
+        } catch (IOException ex) {
+           log.debug("Failed to read file {}.", filename, ex);
+        //} catch (ClassNotFoundException ex) {
+        //    System.out.println("ClassNotFoundException is caught");
+        } catch (BACnetException e) {
+            log.debug("Failed to deserizlize file {} to class {}", filename, clazz.getClass(), e);
+        }
+        return presentValue;
     }
 }

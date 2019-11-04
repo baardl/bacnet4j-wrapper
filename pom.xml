@@ -56,7 +56,7 @@
         <osgi.export />
 
         <commons-lang3.version>3.7</commons-lang3.version>
-        <bacnet4j.version>5.0.0</bacnet4j.version>
+        <bacnet4j.version>5.0.3-SNAPSHOT</bacnet4j.version>
         <sero-warp.version>1.0.0</sero-warp.version>
         <sero-scheduler.version>1.1.0</sero-scheduler.version>
         <slf4j.version>1.7.12</slf4j.version>
@@ -71,7 +71,7 @@
                 <version>${project.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>com.serotonin</groupId>
+                        <groupId>com.infiniteautomation</groupId>
                         <artifactId>bacnet4j</artifactId>
                     </exclusion>
                     <exclusion>

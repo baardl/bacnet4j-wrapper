@@ -1,5 +1,7 @@
 package no.entra.bacnet;
 
+import com.serotonin.bacnet4j.npdu.ip.IpNetwork;
+import com.serotonin.bacnet4j.npdu.ip.IpNetworkBuilder;
 import com.serotonin.bacnet4j.service.acknowledgement.ReadPropertyAck;
 import org.code_house.bacnet4j.wrapper.api.BacNetToJavaConverter;
 import org.code_house.bacnet4j.wrapper.api.BacNetUnknownPropertyException;
@@ -22,7 +24,17 @@ public class BacNetAgent {
     public static void main(String[] args) {
         int clientDeviceId = 2001;
         //BacNetClient client = new BacNetIpClient("10.63.23.177", "10.63.23.76", clientDeviceId);
-        BacNetIpClient client = new BacNetIpClient("192.168.1.31", "192.168.1.255", clientDeviceId);
+        boolean withRecordingProxy = true;
+        IpNetwork ipNetwork = null;
+        String ip = "192.168.1.31";
+        String broadcast = "192.168.1.255";
+        int port = 47808;
+        if (withRecordingProxy) {
+            ipNetwork = new IpNetworkBuilder().withLocalBindAddress(ip).withBroadcast(broadcast, 24).withPort(port).buildRecordingProxy();
+        } else {
+            ipNetwork = new IpNetworkBuilder().withLocalBindAddress(ip).withBroadcast(broadcast, 24).withPort(port).build();
+        }
+        BacNetIpClient client = new BacNetIpClient(ipNetwork, clientDeviceId);
         client.start();
         log.info("Discovering devices.");
         Set<Device> devices = client.discoverDevices(5000); // given number is timeout in millis
