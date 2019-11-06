@@ -27,7 +27,10 @@ public class BacNetAgent {
         boolean withRecordingProxy = true;
         IpNetwork ipNetwork = null;
         String ip = "192.168.1.31";
+        ip = "10.62.1.11";
         String broadcast = "192.168.1.255";
+        broadcast = "10.62.1.11";
+        broadcast = "192.168.241.241";
         int port = 47808;
         if (withRecordingProxy) {
             ipNetwork = new IpNetworkBuilder().withLocalBindAddress(ip).withBroadcast(broadcast, 24).withPort(port).buildRecordingProxy();
