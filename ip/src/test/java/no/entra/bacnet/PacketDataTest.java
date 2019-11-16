@@ -12,7 +12,6 @@ import java.net.InetAddress;
 
 import static com.serotonin.bacnet4j.npdu.ip.IpNetwork.MESSAGE_LENGTH;
 import static no.entra.bacnet.ByteToFileHelper.readFirstBytesFromFile;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class PacketDataTest {
@@ -22,28 +21,22 @@ public class PacketDataTest {
 
     @Test
     public void verifyBacnetContent() throws IOException {
-        String filename = "C:\\Users\\gp694\\examples\\bacnet\\bacnet4j-wrapper\\packetdata";
-        /*
-        BufferedReader reader = new BufferedReader(new FileReader(filename));
-        String line = reader.readLine();
-        packetData = line.substring(4,MESSAGE_LENGTH + 2);
-         */
+        String filename = "C:\\Users\\gp694\\examples\\bacnet\\bacnet4j-wrapper\\hjemmefra";
         final byte[] buffer = readFirstBytesFromFile(MESSAGE_LENGTH, filename); // new byte[MESSAGE_LENGTH];
          DatagramPacket p = new DatagramPacket(buffer, buffer.length);
-         //int length = packetData.getBytes().length;
-         log.debug("Length {}", buffer.length);
 
         InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
         p.setAddress(inetAddress);
         p.setPort(47808);
-        int bytesIn = p.getLength();
         final ByteQueue queue = new ByteQueue(buffer, 0, p.getLength());
         final OctetString link = IpNetworkUtils.toOctetString(p.getAddress().getAddress(), p.getPort());
-        for (int i = 0; i < 10; i++) {
+        String asHex = "";
+        for (int i = 0; i < queue.size(); i++) {
             byte nextByte = queue.pop();
-            log.trace("i: {}; byte: {}", i, String.format("%02x", nextByte));
+            asHex += String.format("%02x", nextByte);
+            //log.trace("i: {}; byte: {}", i, String.format("%02x", nextByte));
         }
-        assertEquals("81", queue.pop());
+        log.info("asHex: {}", asHex);
         /*
          InetAddress inetAddress = InetAddress.getByName(localBindAddressStr);
                 p.setAddress(inetAddress);
@@ -72,5 +65,6 @@ public class PacketDataTest {
          */
 
     }
+
 
 }

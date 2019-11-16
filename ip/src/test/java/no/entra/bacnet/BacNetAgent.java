@@ -2,20 +2,12 @@ package no.entra.bacnet;
 
 import com.serotonin.bacnet4j.npdu.ip.IpNetwork;
 import com.serotonin.bacnet4j.npdu.ip.IpNetworkBuilder;
-import com.serotonin.bacnet4j.service.acknowledgement.ReadPropertyAck;
 import org.code_house.bacnet4j.wrapper.api.BacNetToJavaConverter;
-import org.code_house.bacnet4j.wrapper.api.BacNetUnknownPropertyException;
-import org.code_house.bacnet4j.wrapper.api.Device;
-import org.code_house.bacnet4j.wrapper.api.Property;
 import org.code_house.bacnet4j.wrapper.ip.BacNetIpClient;
 import org.slf4j.Logger;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.io.File;
 
-import static no.entra.bacnet.SerializationHelper.serialize;
-import static no.entra.bacnet.SerializationHelper.serializeWithByteQueue;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class BacNetAgent {
@@ -25,24 +17,30 @@ public class BacNetAgent {
         int clientDeviceId = 2001;
         //BacNetClient client = new BacNetIpClient("10.63.23.177", "10.63.23.76", clientDeviceId);
         boolean withRecordingProxy = true;
+        boolean rerunFromFile = true;
         IpNetwork ipNetwork = null;
         String ip = "192.168.1.31";
-        ip = "10.62.1.11";
+//        ip = "10.62.1.11";
+//        ip = "10.62.120.114";
         String broadcast = "192.168.1.255";
-        broadcast = "10.62.1.11";
-        broadcast = "192.168.241.241";
+//        broadcast = "10.62.1.11";
+//        broadcast = "192.168.241.241";
+//        broadcast = "10.62.120.114";
+        String filename = "C:\\Users\\gp694\\examples\\bacnet\\bacnet4j-wrapper\\hjemmefra";
+        File recordingFile = new File(filename);
         int port = 47808;
         if (withRecordingProxy) {
-            ipNetwork = new IpNetworkBuilder().withLocalBindAddress(ip).withBroadcast(broadcast, 24).withPort(port).buildRecordingProxy();
+            ipNetwork = new IpNetworkBuilder().withLocalBindAddress(ip).withBroadcast(broadcast, 24).withPort(port).buildRecordingProxy(recordingFile, rerunFromFile);
         } else {
             ipNetwork = new IpNetworkBuilder().withLocalBindAddress(ip).withBroadcast(broadcast, 24).withPort(port).build();
         }
         BacNetIpClient client = new BacNetIpClient(ipNetwork, clientDeviceId);
         client.start();
         log.info("Discovering devices.");
-        Set<Device> devices = client.discoverDevices(5000); // given number is timeout in millis
-        log.info("Found devices: " + devices.size());
-        serialize(devices, "devices.ser");
+//        Set<Device> devices = client.discoverDevices(5000); // given number is timeout in millis
+//        log.info("Found devices: " + devices.size());
+        //serialize(devices, "devices.ser");
+        /*
         Random random = new Random();
         for (Device device : devices) {
             try {
@@ -81,6 +79,7 @@ public class BacNetAgent {
                 log.info("Failed to find info for device {}", device, e);
             }
         }
+         */
         log.info("Done.");
         client.stop();
     }
